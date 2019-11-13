@@ -15,11 +15,18 @@ add, subtract, multiply, derivative, f(x), equals, isZero, root, copy, area, ite
 sources:
 
 Riemann's Integral:  https://en.wikipedia.org/wiki/Riemann_integral 
+
 Iterator - https://docs.oracle.com/javase/7/docs/api/java/util/Iterator.html
+
 Secant method (root func') - https://he.wikipedia.org/wiki/%D7%A9%D7%99%D7%98%D7%AA_%D7%94%D7%9E%D7%99%D7%AA%D7%A8
 https://www.geeksforgeeks.org 
+
 https://stackoverflow.com 
-https://github.com 
+
+https://github.com
+
 https://www.java-forums.org
+
 https://www.vogella.com/tutorials/JavaRegularExpressions/article.html
+
 https://regexr.com/
