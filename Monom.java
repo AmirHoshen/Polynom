@@ -97,7 +97,7 @@ public class Monom implements function {
 			str = str.replaceAll("\\*", "");
 			this.set_coefficient(getCoef(str));
 			try {this.set_power(getPow(str));}
-			catch(Exception e) {System.out.println(e.getMessage());}
+			catch(Exception e) {throw e;}
 		}
 		else throw new Exception("Monom must be from shape a*x^b while b must be positive");
 	}
