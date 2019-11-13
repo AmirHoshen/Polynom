@@ -1,4 +1,4 @@
-# Polynomial
+# Polynom
 Represents a polynom's and monom's functions , specificly ...the monom is a type of continues functions and polynom is a assortment of monoms
 
 Authors: Amir Hoshen 305151292 and Peleg Zoborovsky 316486786
