@@ -5,7 +5,7 @@ Authors: Amir Hoshen 305151292 and Peleg Zoborovsky 316486786
 
 this project represents a Polynom and Monom when each of them have functions that can be applied on them.
 the class Monom represent a Monom from the shape a*x^b where: a(coefficient) is a real number and b(power) is a non-negative natural number,
-and methods that perform manipulations on the monom such as:
+and the methods that perform manipulations on the monom such as:
 add, subtract, multiply, derivative, f(x), copy, equals and toString.
 
 the class Polynom represent a Polynom from the shape   a*X1^b + a*X2^b + .... + a*x(n)^b 
