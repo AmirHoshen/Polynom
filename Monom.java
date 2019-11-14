@@ -91,15 +91,47 @@ public class Monom implements function {
 	 * @param s is a String the method <Monom requested to build
 	 */
 	public Monom(String str) throws Exception {//string constructor
-		str = str.replaceAll("X", "x");
-		if(str.matches("(?=.+)([+-]?[0-9]*[.]?[0-9]*(?:\\*?x?(?:\\^[0-9]+)?)?)*"))
-		{
-			str = str.replaceAll("\\*", "");
-			this.set_coefficient(getCoef(str));
-			try {this.set_power(getPow(str));}
-			catch(Exception e) {throw e;}
+		if(errorDetector(str)) {
+			str = str.replaceAll("X", "x");
+			if(str.matches("(?=.+)([+-]?[0-9]*[.]?[0-9]*(?:\\*?x?(?:\\^[0-9]+)?)?)*"))
+			{
+				str = str.replaceAll("\\*", "");
+				this.set_coefficient(getCoef(str));
+				try {this.set_power(getPow(str));}
+				catch(Exception e) {throw e;}
+			}
+			else throw new Exception("Monom must be from shape a*x^b while b must be positive");
+		}else throw new Exception("Monom must be from shape a*x^b while b must be positive");
+	}
+	/**
+	 * Checks for errors in the input string for illegal char occurrences if finds more than one legal char
+	 * then returns false else if nothing wrong returns true.
+	 * @param s - string input to be checked.
+	 * @return - true if legal input string , false if illegal.
+	 */
+	public boolean errorDetector(String s) {
+		if (!s.isEmpty()){
+			int countMinus = (int) (s.chars().filter(a -> a == '-').count());
+			if (countMinus >= 2)
+				return false;
+			int countDots = (int) (s.chars().filter(a -> a == '.').count());
+			if (countDots >= 2)
+				return false;
+			int countPow = (int) (s.chars().filter(a -> a == '^').count());
+			if (countPow >= 2)
+				return false;
+			int countX = (int) (s.chars().filter(a -> a == 'x').count());
+			if (countX >= 2)
+				return false;
+			int countKefel = (int) (s.chars().filter(a -> a == '*').count());
+			if (countKefel >= 2)
+				return false;
+			if (s.charAt(s.length() - 1) == '^')
+				return false;
+		} else {
+			return false;
 		}
-		else throw new Exception("Monom must be from shape a*x^b while b must be positive");
+		return true;
 	}
 	
 	/**
