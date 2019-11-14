@@ -43,41 +43,34 @@ public class Polynom implements Polynom_able{
 	public Polynom() {
 		poly = new ArrayList<>(0);
 	}
-	/**
-	 * initializing a <Polynom from a String such as:
-	 *  {"x", "3+1.4X^3-34x"}
-	 *  this kind of string is illegal {"(2x^2-4)(-1.2x-7.1)", "(3-3.4x+1)((3.1x-1.2)-(3X^2-3.1))"};
-	 * @param s: is a string represents a <Polynom
-	 * @throws Exception 
-	 */
-	public Polynom(String s) throws Exception {
-		try {
-		if(!s.isEmpty()){
-
-			s = s.replaceAll(" ","");
-			s = s.replaceAll("-","+-");
-			s = s.toLowerCase();
-			String [] ans = s.split("\\+");
-
-			if(ans.length>1 && ans[0].isEmpty()){
-				for(int i=1; i<ans.length; i++){
-					add(new Monom(ans[i]));  
-				}
-			}else{
-				for(int i=0; i<ans.length; i++){
-					add(new Monom(ans[i]));
-				}
-			}
-		}else{
-			throw new IllegalArgumentException("Empty string");
-		}
-
-		Monom_Comperator mc = new Monom_Comperator();
-		this.poly.sort(mc);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
+	
+	public Polynom(Polynom p) {//copy constractor
+		poly = new ArrayList<Monom>();
+		Iterator<Monom> it = p.iteretor();
+		while(it.hasNext()) {
+			Monom a = new Monom(it.next());
+			add(a);
 		}
 	}
+	
+	public Polynom(String str) throws Exception {//string constractor
+		str = str.replaceAll("X", "x");
+		if(str.matches("(?=.+)([+-]?[0-9]*[.]?[0-9]*(?:\\*?x?(?:\\^[0-9]+)?)?)*"))
+		{
+			this.poly = new ArrayList<Monom>(0);
+			str = str.replaceAll("\\-", "+-");
+			str = str.replaceAll("\\*", "");
+			if(str.charAt(0)=='+') {
+				str=str.substring(1);
+			}
+			for(String m :str.split("\\+")) poly.add(new Monom(m));
+		}
+		else System.err.println("insert unvaild polynom");
+		Monom_Comperator mc = new Monom_Comperator();
+		poly.sort(mc);	
+
+	}
+
 
 
 	/***
