@@ -249,11 +249,14 @@ public class Polynom implements Polynom_able{
 		if(f(x0) * f(x1) > 0) {
 			throw new IllegalArgumentException("Wrong Values");
 		}else {
-			double xTag = x0;
-			while(Math.abs(xTag) >= eps) {
-				xTag = x1 - ((f(x1) * (x1 - x0)) / (f(x1) - f(x0)));
+			double xTag = 0;
+			int runs = 50;
+			for(int i = 1 ; i< runs ; i++){
+				xTag = (x1 - x0)/ (this.f(x1)-this.f(x0)) * this.f(x1);
+				if(Math.abs(xTag) < eps)
+					return x1;
 				x0 = x1;
-				x1 = xTag;
+				x1= x1 - xTag;
 			}
 			return xTag;
 		}
