@@ -34,8 +34,7 @@ public class ComplexFunction implements complex_function{
         }
     }
     public ComplexFunction(Polynom p1, Polynom p2) {
-        Operation oper = Operation.None;
-        switch (oper){
+        switch (Operation.None){
             case Plus:
                 break;
             case Times:
@@ -62,15 +61,7 @@ public class ComplexFunction implements complex_function{
             if(s.charAt(i)=='(') leftChar.push(s.charAt(i));
             if(s.charAt(i)==')') rightChar.push(s.charAt(i));
         }
-        if(leftChar.size() != rightChar.size()){
-            return false;
-        }else{
-            while(!leftChar.isEmpty()&&!rightChar.isEmpty()){
-                leftChar.pop();
-                rightChar.pop();
-            }
-        }
-        return leftChar.isEmpty() && rightChar.isEmpty();
+        return leftChar.size() == rightChar.size();
     }
 
     /** Add to this complex_function the f1 complex_function
@@ -128,7 +119,7 @@ public class ComplexFunction implements complex_function{
     }
     /**
      * The complex_function oparation: plus, mul, div, max, min, comp
-     * @return
+     * @return op
      */
     @Override
     public Operation getOp(){
