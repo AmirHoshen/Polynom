@@ -1,6 +1,56 @@
 package Ex1;
 
-public class complexFunction implements complex_function{
+import static Ex1.Operation.*;
+
+public class ComplexFunction implements complex_function{
+    private double y = 0;
+    public ComplexFunction(String op, Polynom p1, Polynom p2) {
+        Operation oper = Error;
+        for(Operation operation : Operation.values()){
+            if(operation.name().equalsIgnoreCase(op)){
+                oper = operation;
+            }
+        }
+        switch (oper){
+            case Plus:
+                break;
+            case Times:
+                break;
+            case Divid:
+                break;
+            case Max:
+                break;
+            case Min:
+                break;
+            case Comp:
+                break;
+            case None:
+                break;
+            case Error:
+                throw new IllegalArgumentException("Operation is undefined!");
+        }
+    }
+    public ComplexFunction(Polynom p1, Polynom p2) {
+        Operation oper = None;
+        switch (oper){
+            case Plus:
+                break;
+            case Times:
+                break;
+            case Divid:
+                break;
+            case Max:
+                break;
+            case Min:
+                break;
+            case Comp:
+                break;
+            case None:
+                break;
+            case Error:
+                throw new IllegalArgumentException("Operation is undefined!");
+        }
+    }
 
     /** Add to this complex_function the f1 complex_function
      *
