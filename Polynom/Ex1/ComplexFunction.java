@@ -60,6 +60,8 @@ public class ComplexFunction implements complex_function{
         for(int i=0; i<s.length(); i++){
             if(s.charAt(i)=='(') leftChar.push(s.charAt(i));
             if(s.charAt(i)==')') rightChar.push(s.charAt(i));
+            if(rightChar.size()>leftChar.size())
+                return false;
         }
         return leftChar.size() == rightChar.size();
     }
@@ -141,10 +143,12 @@ public class ComplexFunction implements complex_function{
         return null;
     }
 
-//    public static void main(String[] args){
-//        String complex = "max(max(max(min(x^6+5x^2+12,5x^7+16x^2+30),17x^3+25x^2+2),9x^5+12x^3+3.54x^2+3),32x^2+15x+90)";
-//        System.out.println(isBalanced(complex));
-//        String brackets = "((((()))))";
-//        System.out.println(isBalanced(brackets));
-//    }
+    public static void main(String[] args){
+        String complex = "max(max(max(min(x^6+5x^2+12,5x^7+16x^2+30),17x^3+25x^2+2),9x^5+12x^3+3.54x^2+3),32x^2+15x+90)";
+        System.out.println(isBalanced(complex));
+        String brackets = "((((()))))";
+        String bracketsToFail = ")))))(((((";
+        System.out.println(isBalanced(brackets));
+        System.out.println(isBalanced(bracketsToFail));
+    }
 }
