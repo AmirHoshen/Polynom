@@ -115,12 +115,13 @@ class complexFunctionTest {
     void copy() throws Exception {
     }
 @Test
-     void FunctionsFactory() throws Exception {
+    void FunctionsFactory() throws Exception {
         ComplexFunction cf = new ComplexFunction("times",
                 new ComplexFunction("Plus", new Polynom("4x+4"),new Polynom("5x+5")),
-                        new ComplexFunction("times",new Polynom("6x+6"),new Polynom("7x+7"))
-                );
-
+                new ComplexFunction("times",new Polynom("6x+6"),new Polynom("7x+7"))
+        );
+       System.out.println(cf.result.toString());
+       System.out.println("f(3)= " + cf.f(3));
         //Functions_GUI ans = new Functions_GUI();
 //        String s1 = "-x^4+2x^3+x+2";
 //        String s2 = "x+2";
