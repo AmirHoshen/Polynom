@@ -8,20 +8,31 @@ public class ComplexFunction implements complex_function{
     private ComplexFunction right;
     public Polynom result;
 
-    public ComplexFunction(String op, function p1, function p2) throws Exception {
-        operation = Error;
-        //result = new Polynom(p1);
+    public ComplexFunction(String op, function f1, function f2) throws Exception {
         for(Operation operation : Operation.values()){
             if(operation.name().equalsIgnoreCase(op)){
                 this.operation = operation;
             }
         }
-        switch (operation){
-            case Plus:
-                //this.result.add(p2);
-                break;
+        left = new ComplexFunction(f1);
+        right = new ComplexFunction(f2);
+        result = new Polynom();
+            switch (operation){
+                case Plus:
+                    if(left!=null)
+                        if(left.result != null)
+                            result.add(left.result);
+                    if(right!=null)
+                        if(right.result != null)
+                            result.add(right.result);
+                    break;
             case Times:
-                //this.result.multiply(p2);
+                if(left!=null)
+                    if(left.result != null)
+                        result.multiply(left.result);
+                if(right!=null)
+                    if(right.result != null)
+                        result.multiply(right.result);
                 break;
             case Divid:
                 break;
@@ -32,26 +43,15 @@ public class ComplexFunction implements complex_function{
             case Comp:
                 break;
             case None:
-                break;
-            case Error:
-                throw new IllegalArgumentException("Operation is undefined!");
-        }
-    }
-    public ComplexFunction(Polynom p1, Polynom p2) {
-        switch (Operation.None){
-            case Plus:
-                break;
-            case Times:
-                break;
-            case Divid:
-                break;
-            case Max:
-                break;
-            case Min:
-                break;
-            case Comp:
-                break;
-            case None:
+                if(f1 != null && f2 == null){
+                    if(left.operation==None){
+                        result = left.result;
+                    }else{
+                        throw new IllegalArgumentException("Instructions are not clear Cant Continue!");
+                    }
+                }else{
+                    throw new IllegalArgumentException("Instructions are not clear Cant Continue!");
+                }
                 break;
             case Error:
                 throw new IllegalArgumentException("Operation is undefined!");
@@ -75,7 +75,7 @@ public class ComplexFunction implements complex_function{
             this.right = null;
             this.result = new Polynom((Monom) function);
         }else{
-            System.out.println("ComplexFunction(Function function) got bad argument");
+            //System.out.println("ComplexFunction(Function function) got bad argument");
         }
     }
 
@@ -96,22 +96,22 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public void plus(function f1) throws Exception {
-      if(f1 instanceof ComplexFunction)
-      {
-          //befor need to check if f1 should go and calculate
-          //left function
-          //right function
-          //or just solve it e.g:
-        result.add(((ComplexFunction) f1).result);
-      }
-      else if(f1 instanceof Polynom)
-      {
-        result.add((Polynom)f1);
-      }
-      else if(f1 instanceof  Monom)
-      {
-        result.add((Monom)f1);
-      }
+//      if(f1 instanceof ComplexFunction)
+//      {
+//          //befor need to check if f1 should go and calculate
+//          //left function
+//          //right function
+//          //or just solve it e.g:
+//        result.add(((ComplexFunction) f1).result);
+//      }
+//      else if(f1 instanceof Polynom)
+//      {
+//        result.add((Polynom)f1);
+//      }
+//      else if(f1 instanceof  Monom)
+//      {
+//        result.add((Monom)f1);
+//      }
     }
 
     /** Multiply this complex_function with the f1 complex_function
@@ -120,22 +120,22 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public void mul(function f1){
-        if(f1 instanceof ComplexFunction)
-        {
-            //befor need to check if f1 should go and calculate
-            //left function
-            //right function
-            //or just solve it e.g:
-            result.multiply(((ComplexFunction) f1).result);
-        }
-        else if(f1 instanceof Polynom)
-        {
-            result.multiply((Polynom)f1);
-        }
-        else if(f1 instanceof  Monom)
-        {
-            result.multiply((Monom)f1);
-        }
+//        if(f1 instanceof ComplexFunction)
+//        {
+//            //befor need to check if f1 should go and calculate
+//            //left function
+//            //right function
+//            //or just solve it e.g:
+//            result.multiply(((ComplexFunction) f1).result);
+//        }
+//        else if(f1 instanceof Polynom)
+//        {
+//            result.multiply((Polynom)f1);
+//        }
+//        else if(f1 instanceof  Monom)
+//        {
+//            result.multiply((Monom)f1);
+//        }
     }
     /** Divides this complex_function with the f1 complex_function
      *
@@ -273,8 +273,32 @@ public class ComplexFunction implements complex_function{
         return null;
     }
     @Override
-    public String toString(){
-        return result.toString();
+    public String toString(){//should be recursive but cant
+        String ans = "f(x)= "+ this.operation.name()+"(";
+        if(left!=null)
+            ans+= helpToString(left) + ",";
+        if(right!=null)
+            ans+= helpToString(right) + ")";
+        return ans;
+    }
+    public String helpToString(ComplexFunction cf){
+        String ans ="";
+        if(cf!= null && cf.operation != None){
+            ans+= cf.operation.name()+"(";
+            if(cf.left!=null  && cf.left.operation!=None){
+                ans += helpToString(cf.left);
+            }
+           // ans += ",";
+            if (cf.right!=null && cf.right.operation!= None){
+                ans +=helpToString(cf.right) + ")";
+            }
+            if(cf.left!= null && cf.right!=null && cf.right.operation==None && cf.left.operation==None){
+                ans += cf.left.result.toString() + "," + cf.right.result.toString() + ")";
+            }
+        }else{
+            ans+=cf.result.toString();
+            }
+        return ans;
     }
 
     public static void main(String[] args){
