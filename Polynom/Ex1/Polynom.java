@@ -9,7 +9,7 @@ import java.util.Iterator;
  * 1. Riemann's Integral: https://en.wikipedia.org/wiki/Riemann_integral
  * 2. Finding a numerical value between two values (currently support root only f(x)=0).
  * 3. Derivative
- * 
+ *
  * @author Boaz
  *
  */
@@ -38,7 +38,7 @@ public class Polynom implements Polynom_able{
 	public Polynom() {
 		poly = new ArrayList<>(0);
 	}
-	
+
 	public Polynom(Polynom p) {//copy constractor
 		poly = new ArrayList<Monom>();
 		Iterator<Monom> it = p.iteretor();
@@ -47,7 +47,12 @@ public class Polynom implements Polynom_able{
 			add(a);
 		}
 	}
-	
+	public Polynom(Monom m) {//copy constractor
+		this.poly = new ArrayList<Monom>();
+		this.poly.add(m);
+
+	}
+
 	public Polynom(String str) throws Exception {//string constractor
 		str = str.replaceAll("X", "x");
 		if(str.matches("(?=.+)([+-]?[0-9]*[.]?[0-9]*(?:\\*?x?(?:\\^[0-9]+)?)?)*"))
@@ -62,7 +67,7 @@ public class Polynom implements Polynom_able{
 		}
 		else System.err.println("insert unvaild polynom");
 		Monom_Comperator mc = new Monom_Comperator();
-		poly.sort(mc);	
+		poly.sort(mc);
 
 	}
 
@@ -88,7 +93,7 @@ public class Polynom implements Polynom_able{
 
 	/***
 	 * adding a <Polynom to this.polynom
-	 * and removing 0's caused from subtract e.g(-x+x) 
+	 * and removing 0's caused from subtract e.g(-x+x)
 	 *@param p1 is the <Polynom that will be added to this.polynom
 	 */
 	@Override
@@ -143,7 +148,7 @@ public class Polynom implements Polynom_able{
 	 * answer will be put at this polynom after calculation.
 	 * /*<Polynom <ans is Initialized with 0's first after the first while's loop
 	 * filling <ans with the result multiplication
-	 * last while loop ensure all 0's will be removed from <Polynom <ans 
+	 * last while loop ensure all 0's will be removed from <Polynom <ans
 	 * @param p1 is a polynom we need to multiply with this polynom
 	 */
 	@Override
@@ -164,7 +169,7 @@ public class Polynom implements Polynom_able{
 			}
 		}
 
-		this.poly = ans.poly; 
+		this.poly = ans.poly;
 		Iterator<Monom> poly_iter2 = this.iteretor();
 
 		while (poly_iter2.hasNext()) {
@@ -186,7 +191,7 @@ public class Polynom implements Polynom_able{
 				while(iter1.hasNext() && iter2.hasNext()) {
 					Monom run1 = iter1.next();
 					Monom run2 = iter2.next();
-					if(run1.get_coefficient()!= run2.get_coefficient() 
+					if(run1.get_coefficient()!= run2.get_coefficient()
 							&& run1.get_power() !=run2.get_power()) return false;
 				}
 				if(!iter1.hasNext() && !iter2.hasNext()) return true;
@@ -198,7 +203,7 @@ public class Polynom implements Polynom_able{
 	}
 
 	/***
-	 * removing every 0 <Monom from the <Polynom 
+	 * removing every 0 <Monom from the <Polynom
 	 * using <Monom type iterator to run over the <Polynom
 	 */
 	public void zeroCorrection() {
@@ -216,7 +221,7 @@ public class Polynom implements Polynom_able{
 
 	/**
 	 * method is looking for zero's in polynom using iterator to move over each monom in this polynom
-	 * if monom coefficient not equals zero return false 
+	 * if monom coefficient not equals zero return false
 	 * other was return true
 	 */
 	@Override
@@ -235,14 +240,14 @@ public class Polynom implements Polynom_able{
 
 	/**
 	 * Compute a value xTag (x0<=xTag<=x1) for with |f(xTag)| <eps
-	 * assuming (f(x0)*f(x1)<=0, else should throws runtimeException 
+	 * assuming (f(x0)*f(x1)<=0, else should throws runtimeException
 	 * computes f(xTag) such that:
-	 * 	(i) x0<=xTag<=x1 && 
+	 * 	(i) x0<=xTag<=x1 &&
 	 * 	(ii) |f(xTag)|<eps
 	 * @param x0 starting point
 	 * @param x1 end point
 	 * @param eps>0 (positive) representing the epsilon range the solution should be within.
-	 * @return an approximated value (root) for this (cont.) function 
+	 * @return an approximated value (root) for this (cont.) function
 	 */
 	@Override
 	public double root(double x0, double x1, double eps) {// Algorithm for Finding Root
@@ -295,7 +300,7 @@ public class Polynom implements Polynom_able{
 	 * This function computes Riemann's Integral over this Polynom starting from x0,
 	 * till x1 using epsilon(eps) size steps, We used:
 	 * https://en.wikipedia.org/wiki/Riemann_integral
-	 * 
+	 *
 	 * @param x0 the first point of the domain
 	 * @param x1 the second point of the domain
 	 * @param eps a very small number
@@ -332,7 +337,7 @@ public class Polynom implements Polynom_able{
 	}
 
 	/**
-	 * string the result polynom using decimal format 
+	 * string the result polynom using decimal format
 	 * print coefficient number  precision with max 2 numbers after decimal point
 	 */
 	public String toString() {
@@ -368,7 +373,7 @@ public class Polynom implements Polynom_able{
 
 	/**
 	 * this method is overridden in monom class
-	 * for multiplying each monom in polynom 
+	 * for multiplying each monom in polynom
 	 */
 	public void multiply(Monom m1) {
 
