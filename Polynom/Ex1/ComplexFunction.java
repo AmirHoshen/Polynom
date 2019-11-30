@@ -12,6 +12,7 @@ public class ComplexFunction implements complex_function{
         for(Operation operation : Operation.values()){
             if(operation.name().equalsIgnoreCase(op)){
                 this.operation = operation;
+                break;
             }
         }
         left = new ComplexFunction(f1);
@@ -29,7 +30,7 @@ public class ComplexFunction implements complex_function{
             case Times:
                 if(left!=null)
                     if(left.result != null)
-                        result.multiply(left.result);
+                        result.add(left.result);//if add was multiply it would be zero .
                 if(right!=null)
                     if(right.result != null)
                         result.multiply(right.result);
@@ -95,7 +96,7 @@ public class ComplexFunction implements complex_function{
      * @param f1 the complex_function which will be added to this complex_function.
      */
     @Override
-    public void plus(function f1) throws Exception {
+    public void plus(function f1)  {
 //      if(f1 instanceof ComplexFunction)
 //      {
 //          //befor need to check if f1 should go and calculate
