@@ -4,11 +4,13 @@ import java.util.Stack;
 import static Ex1.Operation.*;
 public class ComplexFunction implements complex_function{
     private Operation operation;
+    private ComplexFunction left;
+    private ComplexFunction right;
     public Polynom result;
 
-    public ComplexFunction(String op, Polynom p1, Polynom p2) throws Exception {
+    public ComplexFunction(String op, function p1, function p2) throws Exception {
         operation = Error;
-        result = new Polynom(p1);
+        //result = new Polynom(p1);
         for(Operation operation : Operation.values()){
             if(operation.name().equalsIgnoreCase(op)){
                 this.operation = operation;
@@ -16,9 +18,10 @@ public class ComplexFunction implements complex_function{
         }
         switch (operation){
             case Plus:
-                this.result.add(p2);
+                //this.result.add(p2);
                 break;
             case Times:
+                //this.result.multiply(p2);
                 break;
             case Divid:
                 break;
@@ -52,6 +55,27 @@ public class ComplexFunction implements complex_function{
                 break;
             case Error:
                 throw new IllegalArgumentException("Operation is undefined!");
+        }
+    }
+
+    public ComplexFunction(function function) {
+        if(function instanceof ComplexFunction){
+            this.operation = ((ComplexFunction) function).getOp();
+            this.left = new ComplexFunction( ((ComplexFunction) function).left());
+            this.right = new ComplexFunction(((ComplexFunction) function).right());
+            this.result = ((ComplexFunction) function).result;
+        }else if(function instanceof Polynom){
+            this.operation = None;
+            this.left = null;
+            this.right = null;
+            this.result = new Polynom((Polynom) function);
+        }else if(function instanceof Monom){
+            this.operation = None;
+            this.left = null;
+            this.right = null;
+            this.result = new Polynom((Monom) function);
+        }else{
+            System.out.println("ComplexFunction(Function function) got bad argument");
         }
     }
 
@@ -196,14 +220,14 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public function left(){
-        return null;
+        return this.left;
     }
     /** returns the right side of the complex function - this side might not exists (aka equals null).
      * @return a function representing the left side of this complex funcation
      */
     @Override
     public function right(){
-        return null;
+         return this.right;
     }
     /**
      * The complex_function oparation: plus, mul, div, max, min, comp
@@ -247,6 +271,10 @@ public class ComplexFunction implements complex_function{
     @Override
     public function copy() {
         return null;
+    }
+    @Override
+    public String toString(){
+        return result.toString();
     }
 
     public static void main(String[] args){
