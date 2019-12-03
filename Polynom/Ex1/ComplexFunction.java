@@ -9,6 +9,7 @@ public class ComplexFunction implements complex_function{
     public Polynom result;
 
     public ComplexFunction(String op, function f1, function f2) throws Exception {
+        this.operation=Error;
         for(Operation operation : Operation.values()){
             if(operation.name().equalsIgnoreCase(op)){
                 this.operation = operation;
