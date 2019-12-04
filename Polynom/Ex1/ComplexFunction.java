@@ -6,9 +6,10 @@ public class ComplexFunction implements complex_function{
     private Operation operation;
     private ComplexFunction left;
     private ComplexFunction right;
-    public Polynom result;
+    public Polynom result;//change after div operation is written complexFunc
+    String finalAns ="";
 
-    public ComplexFunction(String op, function f1, function f2) throws Exception {
+    public ComplexFunction(String op, function f1, function f2)  {
         this.operation=Error;
         for(Operation operation : Operation.values()){
             if(operation.name().equalsIgnoreCase(op)){
@@ -237,25 +238,7 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public Operation getOp(){
-        switch(operation){
-            case Error:
-                return Error;
-            case None:
-                return None;
-            case Max:
-                return Max;
-            case Min:
-                return Min;
-            case Comp:
-                return Comp;
-            case Plus:
-                return Plus;
-            case Divid:
-                return Divid;
-            case Times:
-                return Times;
-        }
-        return null;
+        return this.operation;
     }
 
     @Override
@@ -276,7 +259,7 @@ public class ComplexFunction implements complex_function{
     }
     @Override
     public String toString(){//should be recursive but cant
-        String ans = "f(x)= "+ this.operation.name()+"(";
+        String ans = "f(x)= "+this.operation.name()+"(";
         if(left!=null)
             ans+= helpToString(left) + ",";
         if(right!=null)
@@ -290,18 +273,22 @@ public class ComplexFunction implements complex_function{
             if(cf.left!=null  && cf.left.operation!=None){
                 ans += helpToString(cf.left);
             }
-           // ans += ",";
+            // ans += ",";
             if (cf.right!=null && cf.right.operation!= None){
                 ans +=helpToString(cf.right) + ")";
             }
-            if(cf.left!= null && cf.right!=null && cf.right.operation==None && cf.left.operation==None){
-                ans += cf.left.result.toString() + "," + cf.right.result.toString() + ")";
+            if(cf.left!= null && cf.right!=null ) {
+                if (cf.left.operation == None)
+                    ans += cf.left.result.toString() + ",";
+                if (cf.right.operation == None)
+                    ans += cf.right.result.toString() + ")";
             }
         }else{
             ans+=cf.result.toString();
-            }
+        }
         return ans;
     }
+
 
     public static void main(String[] args){
         String complex = "max(max(max(min(x^6+5x^2+12,5x^7+16x^2+30),17x^3+25x^2+2),9x^5+12x^3+3.54x^2+3),32x^2+15x+90)";
