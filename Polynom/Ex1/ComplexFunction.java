@@ -271,9 +271,8 @@ public class ComplexFunction implements complex_function{
         if(cf!= null && cf.operation != None){
             ans+= cf.operation.name()+"(";
             if(cf.left!=null  && cf.left.operation!=None){
-                ans += helpToString(cf.left);
+                ans += helpToString(cf.left) + ",";
             }
-            // ans += ",";
             if (cf.right!=null && cf.right.operation!= None){
                 ans +=helpToString(cf.right) + ")";
             }
