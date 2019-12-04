@@ -7,11 +7,18 @@ public class ComplexFunction implements complex_function{
     private ComplexFunction left;
     private ComplexFunction right;
     public Polynom result;//change after div operation is written complexFunc
-    String finalAns ="";
 
     public ComplexFunction(String op, function f1, function f2)  {
         this.operation=Error;
         for(Operation operation : Operation.values()){
+            if(op.equalsIgnoreCase("mul")) {
+                this.operation = Times;
+                break;
+            }
+            if(op.equalsIgnoreCase("div")) {
+                this.operation = Divid;
+                break;
+            }
             if(operation.name().equalsIgnoreCase(op)){
                 this.operation = operation;
                 break;
@@ -20,15 +27,15 @@ public class ComplexFunction implements complex_function{
         left = new ComplexFunction(f1);
         right = new ComplexFunction(f2);
         result = new Polynom();
-            switch (operation){
-                case Plus:
-                    if(left!=null)
-                        if(left.result != null)
-                            result.add(left.result);
-                    if(right!=null)
-                        if(right.result != null)
-                            result.add(right.result);
-                    break;
+        switch (operation){
+            case Plus:
+                if(left!=null)
+                    if(left.result != null)
+                        result.add(left.result);
+                if(right!=null)
+                    if(right.result != null)
+                        result.add(right.result);
+                break;
             case Times:
                 if(left!=null)
                     if(left.result != null)
@@ -60,6 +67,13 @@ public class ComplexFunction implements complex_function{
                 throw new IllegalArgumentException("Operation is undefined!");
         }
     }
+    public ComplexFunction(Operation operation, function f1 , function f2){
+        ComplexFunction _temp =  new ComplexFunction(operation.name(),f1,f2);
+        this.operation = _temp.operation;
+        this.left = _temp.left;
+        this.right = _temp.right;
+        this.result = _temp.result;
+    }
 
     public ComplexFunction(function function) {
         if(function instanceof ComplexFunction){
@@ -77,8 +91,6 @@ public class ComplexFunction implements complex_function{
             this.left = null;
             this.right = null;
             this.result = new Polynom((Monom) function);
-        }else{
-            //System.out.println("ComplexFunction(Function function) got bad argument");
         }
     }
 
@@ -123,22 +135,7 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public void mul(function f1){
-//        if(f1 instanceof ComplexFunction)
-//        {
-//            //befor need to check if f1 should go and calculate
-//            //left function
-//            //right function
-//            //or just solve it e.g:
-//            result.multiply(((ComplexFunction) f1).result);
-//        }
-//        else if(f1 instanceof Polynom)
-//        {
-//            result.multiply((Polynom)f1);
-//        }
-//        else if(f1 instanceof  Monom)
-//        {
-//            result.multiply((Monom)f1);
-//        }
+
     }
     /** Divides this complex_function with the f1 complex_function
      *
@@ -230,7 +227,7 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public function right(){
-         return this.right;
+        return this.right;
     }
     /**
      * The complex_function oparation: plus, mul, div, max, min, comp
@@ -249,17 +246,48 @@ public class ComplexFunction implements complex_function{
 
     @Override
     public function initFromString(String s) {
-
-        return null;
+        s=s.replaceAll(" ","");
+        if(s.contains("(") && s.contains(")") && isBalanced(s)){
+            int indexOfOp = s.indexOf('(');
+            int indexOfComma = commaFinder(s);
+            int indexOfEnd = s.lastIndexOf(')');
+            return new ComplexFunction(s.substring(0,indexOfOp),
+                    initFromString(s.substring(indexOfOp+1,indexOfComma)),
+                    initFromString(s.substring(indexOfComma+1,indexOfEnd)));
+        }else{
+            try {
+                return new ComplexFunction(new Polynom(s));
+            }catch (Exception e){e.getMessage();}
+        }
+        return null;// idk if it would get this far
+    }
+    public int commaFinder(String s){
+        int opening = 0;
+        int comma = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i)=='(')
+                opening++;
+            if(s.charAt(i)==')')
+                opening--;
+            if(opening==1 && s.charAt(i)==','){
+                comma = i;
+                break;
+            }
+        }
+        return comma;
     }
 
     @Override
     public function copy() {
+
         return null;
     }
     @Override
     public String toString(){//should be recursive but cant
         String ans = "f(x)= "+this.operation.name()+"(";
+        if(left == null && right == null){
+            ans += result.toString()+")";
+        }
         if(left!=null)
             ans+= helpToString(left) + ",";
         if(right!=null)
@@ -271,9 +299,8 @@ public class ComplexFunction implements complex_function{
         if(cf!= null && cf.operation != None){
             ans+= cf.operation.name()+"(";
             if(cf.left!=null  && cf.left.operation!=None){
-                ans += helpToString(cf.left);
+                ans += helpToString(cf.left) + ",";
             }
-            // ans += ",";
             if (cf.right!=null && cf.right.operation!= None){
                 ans +=helpToString(cf.right) + ")";
             }
@@ -288,7 +315,19 @@ public class ComplexFunction implements complex_function{
         }
         return ans;
     }
+    @Override
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ComplexFunction))
+            return false;
 
+        ComplexFunction other = (ComplexFunction) obj;
+
+        for (int i = 1; i <=10; i++) {
+            if(this.f(i)!=other.f(i))
+                return false;
+        }
+        return true;
+    }
 
     public static void main(String[] args){
         String complex = "max(max(max(min(x^6+5x^2+12,5x^7+16x^2+30),17x^3+25x^2+2),9x^5+12x^3+3.54x^2+3),32x^2+15x+90)";
