@@ -249,8 +249,34 @@ public class ComplexFunction implements complex_function{
 
     @Override
     public function initFromString(String s) {
-
-        return null;
+        if(s.contains("(") && s.contains(")")){
+            int indexOfOp = s.indexOf('(');
+            int indexOfComma = commaFinder(s);
+            int indexOfEnd = s.lastIndexOf(')');
+            return new ComplexFunction(s.substring(0,indexOfOp),
+                    initFromString(s.substring(indexOfOp+1,indexOfComma)),
+                    initFromString(s.substring(indexOfComma+1,indexOfEnd)));
+        }else{
+            try {
+                return new ComplexFunction(new Polynom(s));
+            }catch (Exception e){e.getMessage();}
+        }
+        return null;// idk if it would get this far
+    }
+    public int commaFinder(String s){
+        int opening = 0;
+        int comma = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i)=='(')
+                opening++;
+            if(s.charAt(i)==')')
+                opening--;
+            if(opening==1 && s.charAt(i)==','){
+                comma = i;
+                break;
+            }
+        }
+        return comma;
     }
 
     @Override
