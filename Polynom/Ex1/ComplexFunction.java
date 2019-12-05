@@ -12,6 +12,14 @@ public class ComplexFunction implements complex_function{
     public ComplexFunction(String op, function f1, function f2)  {
         this.operation=Error;
         for(Operation operation : Operation.values()){
+            if(op.equalsIgnoreCase("mul")) {
+                this.operation = Times;
+                break;
+            }
+            if(op.equalsIgnoreCase("div")) {
+                this.operation = Divid;
+                break;
+            }
             if(operation.name().equalsIgnoreCase(op)){
                 this.operation = operation;
                 break;
@@ -20,15 +28,15 @@ public class ComplexFunction implements complex_function{
         left = new ComplexFunction(f1);
         right = new ComplexFunction(f2);
         result = new Polynom();
-            switch (operation){
-                case Plus:
-                    if(left!=null)
-                        if(left.result != null)
-                            result.add(left.result);
-                    if(right!=null)
-                        if(right.result != null)
-                            result.add(right.result);
-                    break;
+        switch (operation){
+            case Plus:
+                if(left!=null)
+                    if(left.result != null)
+                        result.add(left.result);
+                if(right!=null)
+                    if(right.result != null)
+                        result.add(right.result);
+                break;
             case Times:
                 if(left!=null)
                     if(left.result != null)
@@ -60,6 +68,14 @@ public class ComplexFunction implements complex_function{
                 throw new IllegalArgumentException("Operation is undefined!");
         }
     }
+    public ComplexFunction(Operation operation, function f1 , function f2){
+        ComplexFunction _temp =  new ComplexFunction(operation.name(),f1,f2);
+        this.operation = _temp.operation;
+        this.left = _temp.left;
+        this.right = _temp.right;
+        this.result = _temp.result;
+    }
+
 
     public ComplexFunction(function function) {
         if(function instanceof ComplexFunction){
@@ -230,7 +246,7 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public function right(){
-         return this.right;
+        return this.right;
     }
     /**
      * The complex_function oparation: plus, mul, div, max, min, comp
@@ -249,8 +265,34 @@ public class ComplexFunction implements complex_function{
 
     @Override
     public function initFromString(String s) {
-
-        return null;
+        if(s.contains("(") && s.contains(")")){
+            int indexOfOp = s.indexOf('(');
+            int indexOfComma = commaFinder(s);
+            int indexOfEnd = s.lastIndexOf(')');
+            return new ComplexFunction(s.substring(0,indexOfOp),
+                    initFromString(s.substring(indexOfOp+1,indexOfComma)),
+                    initFromString(s.substring(indexOfComma+1,indexOfEnd)));
+        }else{
+            try {
+                return new ComplexFunction(new Polynom(s));
+            }catch (Exception e){e.getMessage();}
+        }
+        return null;// idk if it would get this far
+    }
+    public int commaFinder(String s){
+        int opening = 0;
+        int comma = 0;
+        for(int i = 0; i < s.length(); i++){
+            if(s.charAt(i)=='(')
+                opening++;
+            if(s.charAt(i)==')')
+                opening--;
+            if(opening==1 && s.charAt(i)==','){
+                comma = i;
+                break;
+            }
+        }
+        return comma;
     }
 
     @Override
@@ -271,9 +313,8 @@ public class ComplexFunction implements complex_function{
         if(cf!= null && cf.operation != None){
             ans+= cf.operation.name()+"(";
             if(cf.left!=null  && cf.left.operation!=None){
-                ans += helpToString(cf.left);
+                ans += helpToString(cf.left) + ",";
             }
-            // ans += ",";
             if (cf.right!=null && cf.right.operation!= None){
                 ans +=helpToString(cf.right) + ")";
             }
