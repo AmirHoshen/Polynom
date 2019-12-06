@@ -1,4 +1,5 @@
 package Ex1;
+import java.util.Random;
 import java.util.Stack;
 
 import static Ex1.Operation.*;
@@ -6,8 +7,7 @@ public class ComplexFunction implements complex_function{
     private Operation operation;
     private ComplexFunction left;
     private ComplexFunction right;
-    public Polynom result;//change after div operation is written complexFunc
-    String finalAns ="";
+    public Polynom result;
 
     public ComplexFunction(String op, function f1, function f2)  {
         this.operation=Error;
@@ -28,15 +28,15 @@ public class ComplexFunction implements complex_function{
         left = new ComplexFunction(f1);
         right = new ComplexFunction(f2);
         result = new Polynom();
-        switch (operation){
-            case Plus:
-                if(left!=null)
-                    if(left.result != null)
-                        result.add(left.result);
-                if(right!=null)
-                    if(right.result != null)
-                        result.add(right.result);
-                break;
+            switch (operation){
+                case Plus:
+                    if(left!=null)
+                        if(left.result != null)
+                            result.add(left.result);
+                    if(right!=null)
+                        if(right.result != null)
+                            result.add(right.result);
+                    break;
             case Times:
                 if(left!=null)
                     if(left.result != null)
@@ -68,14 +68,6 @@ public class ComplexFunction implements complex_function{
                 throw new IllegalArgumentException("Operation is undefined!");
         }
     }
-    public ComplexFunction(Operation operation, function f1 , function f2){
-        ComplexFunction _temp =  new ComplexFunction(operation.name(),f1,f2);
-        this.operation = _temp.operation;
-        this.left = _temp.left;
-        this.right = _temp.right;
-        this.result = _temp.result;
-    }
-
 
     public ComplexFunction(function function) {
         if(function instanceof ComplexFunction){
@@ -115,22 +107,18 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public void plus(function f1)  {
-//      if(f1 instanceof ComplexFunction)
-//      {
-//          //befor need to check if f1 should go and calculate
-//          //left function
-//          //right function
-//          //or just solve it e.g:
-//        result.add(((ComplexFunction) f1).result);
-//      }
-//      else if(f1 instanceof Polynom)
-//      {
-//        result.add((Polynom)f1);
-//      }
-//      else if(f1 instanceof  Monom)
-//      {
-//        result.add((Monom)f1);
-//      }
+      if(f1 instanceof ComplexFunction)
+      {
+         result.add(((ComplexFunction) f1).result);
+      }
+      else if(f1 instanceof Polynom)
+      {
+        result.add((Polynom)f1);
+      }
+      else if(f1 instanceof  Monom)
+      {
+        result.add((Monom)f1);
+      }
     }
 
     /** Multiply this complex_function with the f1 complex_function
@@ -139,22 +127,18 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public void mul(function f1){
-//        if(f1 instanceof ComplexFunction)
-//        {
-//            //befor need to check if f1 should go and calculate
-//            //left function
-//            //right function
-//            //or just solve it e.g:
-//            result.multiply(((ComplexFunction) f1).result);
-//        }
-//        else if(f1 instanceof Polynom)
-//        {
-//            result.multiply((Polynom)f1);
-//        }
-//        else if(f1 instanceof  Monom)
-//        {
-//            result.multiply((Monom)f1);
-//        }
+        if(f1 instanceof ComplexFunction)
+        {
+            result.multiply(((ComplexFunction) f1).result);
+        }
+        else if(f1 instanceof Polynom)
+        {
+            result.multiply((Polynom)f1);
+        }
+        else if(f1 instanceof  Monom)
+        {
+            result.multiply((Monom)f1);
+        }
     }
     /** Divides this complex_function with the f1 complex_function
      *
@@ -181,18 +165,52 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public void max(function f1){
+        Random rn = new Random();
+        int range = 1000 - -1000 + 1;
+        int randomNum =  rn.nextInt(range) - 1000;
+        int countLeft = 0;
+        int countRight = 0;
         if(f1 instanceof ComplexFunction)
         {
-
+            rn = new Random();
+            for(int i=0 ; i < 6 ; i++){
+                if(result.f(randomNum) > f1.f(randomNum))
+                    countLeft++;
+                if(result.f(randomNum) < f1.f(randomNum))
+                    countRight++;
+                randomNum =  rn.nextInt(range) - 1000;
+            }
+            if(countLeft < countRight)
+                result = ((ComplexFunction) f1).result;
 
         }
         else if(f1 instanceof Polynom)
         {
-
+            for(int i=0 ; i < 6 ; i++){
+                if(result.f(randomNum) > f1.f(randomNum))
+                    countLeft++;
+                if(result.f(randomNum) < f1.f(randomNum))
+                    countRight++;
+                randomNum =  rn.nextInt(range) - 1000;
+            }
+            if(countLeft < countRight)
+                result = (Polynom) f1;
         }
         else if(f1 instanceof  Monom)
         {
-
+             rn = new Random();
+            for(int i=0 ; i < 6 ; i++){
+                randomNum =  rn.nextInt(range) - 1000;
+                if(result.f(randomNum) > f1.f(randomNum))
+                    countLeft++;
+                if(result.f(randomNum) < f1.f(randomNum))
+                    countRight++;
+            }
+            if(countLeft < countRight){
+                Polynom temp = new Polynom();
+                temp.add((Monom) f1);
+                result = (Polynom) f1;
+            }
         }
     }
     /** Computes the minimum over this complex_function and the f1 complex_function
@@ -201,18 +219,52 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public void min(function f1){
+        Random rn = new Random();
+        int range = 1000 - -1000 + 1;
+        int randomNum =  rn.nextInt(range) - 1000;
+        int countLeft = 0;
+        int countRight = 0;
         if(f1 instanceof ComplexFunction)
         {
-
+            rn = new Random();
+            for(int i=0 ; i < 6 ; i++){
+                if(result.f(randomNum) < f1.f(randomNum))
+                    countLeft++;
+                if(result.f(randomNum) > f1.f(randomNum))
+                    countRight++;
+                randomNum =  rn.nextInt(range) - 1000;
+            }
+            if(countLeft < countRight)
+                result = ((ComplexFunction) f1).result;
 
         }
         else if(f1 instanceof Polynom)
         {
-
+            for(int i=0 ; i < 6 ; i++){
+                if(result.f(randomNum) < f1.f(randomNum))
+                    countLeft++;
+                if(result.f(randomNum) > f1.f(randomNum))
+                    countRight++;
+                randomNum =  rn.nextInt(range) - 1000;
+            }
+            if(countLeft < countRight)
+                result = (Polynom) f1;
         }
         else if(f1 instanceof  Monom)
         {
-
+            rn = new Random();
+            for(int i=0 ; i < 6 ; i++){
+                randomNum =  rn.nextInt(range) - 1000;
+                if(result.f(randomNum) < f1.f(randomNum))
+                    countLeft++;
+                if(result.f(randomNum) > f1.f(randomNum))
+                    countRight++;
+            }
+            if(countLeft < countRight){
+                Polynom temp = new Polynom();
+                temp.add((Monom) f1);
+                result = (Polynom) f1;
+            }
         }
     }
     /**
@@ -246,7 +298,7 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public function right(){
-        return this.right;
+         return this.right;
     }
     /**
      * The complex_function oparation: plus, mul, div, max, min, comp
@@ -262,14 +314,14 @@ public class ComplexFunction implements complex_function{
         double ans = ((Polynom)result).f(x);
         return ans;
     }
-
     @Override
     public function initFromString(String s) {
+        s=s.replaceAll(" ","");
         if(s.contains("(") && s.contains(")")){
             int indexOfOp = s.indexOf('(');
             int indexOfComma = commaFinder(s);
             int indexOfEnd = s.lastIndexOf(')');
-            return new ComplexFunction(s.substring(0,indexOfOp),
+                return new ComplexFunction(s.substring(0,indexOfOp),
                     initFromString(s.substring(indexOfOp+1,indexOfComma)),
                     initFromString(s.substring(indexOfComma+1,indexOfEnd)));
         }else{
@@ -302,6 +354,9 @@ public class ComplexFunction implements complex_function{
     @Override
     public String toString(){//should be recursive but cant
         String ans = "f(x)= "+this.operation.name()+"(";
+        if(left==null && right == null){
+            ans += this.result.toString() + ")";
+        }
         if(left!=null)
             ans+= helpToString(left) + ",";
         if(right!=null)
@@ -313,8 +368,9 @@ public class ComplexFunction implements complex_function{
         if(cf!= null && cf.operation != None){
             ans+= cf.operation.name()+"(";
             if(cf.left!=null  && cf.left.operation!=None){
-                ans += helpToString(cf.left) + ",";
+                ans += helpToString(cf.left);
             }
+            // ans += ",";
             if (cf.right!=null && cf.right.operation!= None){
                 ans +=helpToString(cf.right) + ")";
             }
