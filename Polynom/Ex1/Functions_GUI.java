@@ -1,14 +1,23 @@
 package Ex1;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import com.google.gson.Gson;
+
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
 
 public class Functions_GUI implements functions{
     public ArrayList<function> list = new ArrayList<function>();
+
+
+    public static Color[] Colors = {Color.blue,
+            Color.cyan, Color.MAGENTA, Color.ORANGE,
+            Color.red, Color.GREEN, Color.PINK};
 
     @Override
     public boolean add(function e) {
@@ -17,14 +26,14 @@ public class Functions_GUI implements functions{
     }
 
     @Override
-    public boolean addAll(Collection<? extends function> c) {
+    public boolean addAll(Collection<? extends function> c)
+    {
         return this.list.addAll(c);
     }
 
     @Override
     public void clear() {
         this.list.clear();
-
     }
 
     @Override
@@ -89,47 +98,137 @@ public class Functions_GUI implements functions{
     @Override
     public void initFromFile(String file) throws IOException {
         // TODO Auto-generated method stub
-        // variable declaration
-        int ch;
+        try {
+            File newfile = new File(file);
 
-        // check if File exists or not
-        FileReader fr=null;
-        try
-        {
-            fr = new FileReader(file);
+            if (newfile.exists()) {
+                newfile.createNewFile();
+            }else{
+                System.out.println("File doesnt exist");
+            }
+
+            PrintWriter pw = new PrintWriter(newfile);
+
+            pw.close();
+        }catch(IOException e){
+            e.printStackTrace();
         }
-        catch (FileNotFoundException fe)
-        {
-            System.out.println("File not found");
-        }
-
-        // read from FileReader till the end of file
-        while ((ch=fr.read())!=-1)
-            System.out.print((char)ch);
-
-        // close the file
-        fr.close();
     }
 
 
 
     @Override
     public void saveToFile(String file) throws IOException {
-        // TODO Auto-generated method stub
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(list.get(i).toString());
+            if(i + 1 < list.size())sb.append("\n");
+        }
+        String s = sb.toString();
+        FileUtils.writeFile(file, s);
 
     }
 
     @Override
     public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) {
-        // TODO Auto-generated method stub
+        int n = resolution;
+        StdDraw.setCanvasSize(width, height);
+        int size = this.size();
+        double[] x = new double[n+1];
+        double[][] yy = new double[size][n+1];
+        double x_step = (rx.get_max()-rx.get_min())/n;
+        double x0 = rx.get_min();
+        for (int i=0; i<=n; i++) {
+            x[i] = x0;
+            for(int a=0;a<size;a++) {
+                yy[a][i] = this.list.get(a).f(x[i]);
+            }
+            x0+=x_step;
+        }
+        StdDraw.setXscale(rx.get_min(), rx.get_max());
+        StdDraw.setYscale(ry.get_min(), ry.get_max());
 
+        // draw x & y lines
+        for (int i = (int)rx.get_min(); i <= rx.get_max(); i++) {
+            StdDraw.setPenColor(new Color (225, 225, 225));
+            StdDraw.line(rx.get_min(), i, rx.get_max(), i);
+        }
+        for (int i = (int)ry.get_min(); i <= ry.get_max(); i++) {
+            StdDraw.setPenColor(new Color (225, 225, 225));
+            StdDraw.line(i, ry.get_min(), i, ry.get_max());
+        }
+        StdDraw.setPenColor(Color.BLACK);
+        for (int i = (int)rx.get_min(); i <= rx.get_max(); i++) {
+            StdDraw.line(i, -.1, i, .1);
+            String s = "";
+            s += i;
+            if(i != 0)StdDraw.text((double)i, -.6, s);
+        }
+        for (int i = (int)ry.get_min(); i <= ry.get_max(); i++) {
+            StdDraw.line(-.1, i, .1, i);
+            String s = "";
+            s += i;
+            if(i != 0)StdDraw.text(-.5, (double)i, s);
+        }
+        StdDraw.line(rx.get_min(), 0, rx.get_max(), 0);
+        StdDraw.line(0, ry.get_min(), 0, ry.get_max());
+
+        // plot the approximation to the function
+        for(int a=0;a<size;a++) {
+            int c = a%Colors.length;
+            StdDraw.setPenColor(Colors[c]);
+            System.out.println(a+") "+Colors[a]+"  f(x)= "+this.list.get(a));
+            for (int i = 0; i < n; i++) {
+                StdDraw.line(x[i], yy[a][i], x[i+1], yy[a][i+1]);
+            }
+        }
     }
 
     @Override
     public void drawFunctions(String json_file) {
-        // TODO Auto-generated method stub
+        try {
+            String s = FileUtils.readFile(json_file);
+            Gson gson = new Gson();
+            //gson.fromJson(s, GUI_params.class);
+            GUI_params gp = gson.fromJson(s, GUI_params.class);
+            Range rx = new Range(gp.Range_X[0], gp.Range_X[1]);
+            Range ry = new Range(gp.Range_Y[0], gp.Range_Y[1]);
+            if(gp.Resolution < 1 || gp.Range_X[0] >= gp.Range_X[1]
+                    || gp.Range_Y[0] >= gp.Range_Y[1]
+                    || gp.Width <= 0 || gp.Height <= 0) {
+                throw new IOException();
+            }
+            drawFunctions(gp.Width, gp.Height, rx, ry, gp.Resolution);
+
+        } catch (IOException e) {
+            System.out.println("File is not readable or include wrong values, init with default values.");
+            Range rx = new Range(-15, 15);
+            Range ry = new Range(-15, 15);
+            drawFunctions(800, 600, rx, ry, 500);
+        }
+
 
     }
 
+    public class GUI_params {
+        int Width;
+        int Height;
+        int Resolution;
+        double [] Range_X;
+        double [] Range_Y;
+
+        //800, 600, x, y, 500
+
+
+        public String toString() {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Width: " + Width + "\nHeight: " + Height + "\nResolution: "
+                    + Resolution + "\nRange_X: " + Arrays.toString(Range_X)
+                    + "\nRange_Y: " + Arrays.toString(Range_Y));
+            return sb.toString();
+
+        }
+
+    }
 
 }
