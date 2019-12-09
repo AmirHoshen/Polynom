@@ -1,5 +1,7 @@
+package Ex1Testing;
 
 import Ex1.ComplexFunction;
+import Ex1.Monom;
 import Ex1.Operation;
 import Ex1.Polynom;
 import org.junit.jupiter.api.AfterAll;
@@ -116,12 +118,19 @@ class complexFunctionTest {
     }
 @Test
     void FunctionsFactory() throws Exception {
-        ComplexFunction cf = new ComplexFunction("times",
-                new ComplexFunction("Plus", new Polynom("4x+4"),new Polynom("5x+5")),
-                new ComplexFunction("times",new Polynom("6x+6"),new Polynom("7x+7"))
-        );
-       System.out.println(cf.result.toString());
-       System.out.println("f(3)= " + cf.f(3));
+    ComplexFunction cf = new ComplexFunction("plus",new ComplexFunction("plus", new Polynom("6x^2+3x+2"),new Polynom("3x^2+3X+2")),new ComplexFunction("plus",new ComplexFunction("times",new Polynom("x+1"),new Monom("2x")),new Polynom("x")));
+    ComplexFunction cf1 = new ComplexFunction("times",new Polynom("8x+8"),new Polynom("9x+9"));
+    ComplexFunction cf2 = new ComplexFunction("max",new ComplexFunction("min",new Polynom("3x+2"),new Polynom("2x")),new Monom("7x^3"));
+    System.out.println("Testing toString(): ");
+    System.out.println("cf is: "+cf.toString()+"\ncf1 is: "+cf1.toString()+"\ncf2 is: "+cf2.toString());
+    System.out.println("Testing f(x): ");
+    System.out.println("cf --> f(3)= " + cf.f(3));
+    System.out.println("cf1 --> f(3)= " + cf1.f(3));
+    System.out.println("Testing max: ");
+
+
+
+    //ComplexFunction cf = new ComplexFunction("plus", new Polynom("2x+1"),new Polynom("2x+1"));
         //Functions_GUI ans = new Functions_GUI();
 //        String s1 = "-x^4+2x^3+x+2";
 //        String s2 = "x+2";
@@ -144,7 +153,7 @@ class complexFunctionTest {
 //                        new ComplexFunction("times",new Polynom("6x+6"),new Polynom("7x+7"))
 //                )
 //        );
-        System.out.println("Testing Tostring(): "+cf.toString());
+
         //ComplexFunction cf4 = new ComplexFunction("div", new Polynom("x +1"),cf3);
        // cf4.plus(new Monom("2"));
        // cf4.plus(new Polynom("x+2"));
