@@ -76,7 +76,7 @@ public interface Polynom_able extends cont_function{
 	 * create a deep copy of this Polynom
 	 * @return 
 	 */
-	public Polynom_able copy();
+	//public Polynom_able copy();
 	/**
 	 * Compute a new Polynom which is the derivative of this Polynom
 	 * @return
