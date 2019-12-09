@@ -3,9 +3,7 @@ package Ex1;
 import com.google.gson.Gson;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -97,21 +95,16 @@ public class Functions_GUI implements functions{
 
     @Override
     public void initFromFile(String file) throws IOException {
-        // TODO Auto-generated method stub
         try {
-            File newfile = new File(file);
-
-            if (newfile.exists()) {
-                newfile.createNewFile();
-            }else{
-                System.out.println("File doesnt exist");
+            String s = FileUtils.readFile(file);
+            String [] str = s.split("\n");
+            for (int i = 0; i < str.length; i++) {
+                function cf2 = new ComplexFunction();
+                cf2 = cf2.initFromString(str[i]);
+                add(cf2);
             }
-
-            PrintWriter pw = new PrintWriter(newfile);
-
-            pw.close();
-        }catch(IOException e){
-            e.printStackTrace();
+        }catch(Exception e) {
+            throw new IOException("Can not read file");
         }
     }
 
@@ -119,19 +112,12 @@ public class Functions_GUI implements functions{
 
     @Override
     public void saveToFile(String file) throws IOException {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(list.get(i).toString());
-            if(i + 1 < list.size())sb.append("\n");
-        }
-        String s = sb.toString();
-        FileUtils.writeFile(file, s);
-
+        FileUtils.writeFile(file, toString());
     }
 
     @Override
-    public void drawFunctions(int width, int height, Range rx, Range ry, int resolution) {
-        int n = resolution;
+    public void drawFunctions(int width, int height, Range rx, Range ry, int res) {
+        int n = res;
         StdDraw.setCanvasSize(width, height);
         int size = this.size();
         double[] x = new double[n+1];
@@ -149,15 +135,14 @@ public class Functions_GUI implements functions{
         StdDraw.setYscale(ry.get_min(), ry.get_max());
 
         // draw x & y lines
-        for (int i = (int)rx.get_min(); i <= rx.get_max(); i++) {
-            StdDraw.setPenColor(new Color (225, 225, 225));
+        StdDraw.setPenColor(new Color (225, 225, 225));//Draw gray lines
+        for (int i = (int)rx.get_min() * 2; i <= rx.get_max() * 2; i++) {
             StdDraw.line(rx.get_min(), i, rx.get_max(), i);
         }
-        for (int i = (int)ry.get_min(); i <= ry.get_max(); i++) {
-            StdDraw.setPenColor(new Color (225, 225, 225));
+        for (int i = (int)ry.get_min() * 2; i <= ry.get_max() * 2; i++) {
             StdDraw.line(i, ry.get_min(), i, ry.get_max());
         }
-        StdDraw.setPenColor(Color.BLACK);
+        StdDraw.setPenColor(Color.BLACK);//Draw the main lines in black
         for (int i = (int)rx.get_min(); i <= rx.get_max(); i++) {
             StdDraw.line(i, -.1, i, .1);
             String s = "";
@@ -174,10 +159,10 @@ public class Functions_GUI implements functions{
         StdDraw.line(0, ry.get_min(), 0, ry.get_max());
 
         // plot the approximation to the function
-        for(int a=0;a<size;a++) {
-            int c = a%Colors.length;
+        for(int a = 0; a < size; a++) {
+            int c = a % Colors.length;
             StdDraw.setPenColor(Colors[c]);
-            System.out.println(a+") "+Colors[a]+"  f(x)= "+this.list.get(a));
+            System.out.println(a + ") " + Colors[a] + "  f(x)= " + this.list.get(a));
             for (int i = 0; i < n; i++) {
                 StdDraw.line(x[i], yy[a][i], x[i+1], yy[a][i+1]);
             }
