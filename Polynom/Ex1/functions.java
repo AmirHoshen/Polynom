@@ -3,6 +3,7 @@ package Ex1;
  * This interface represents a collection of mathematical functions
  *  which can be presented on a GUI window and can be saved (and load) to file. 
  */
+
 import java.io.IOException;
 import java.util.Collection;
 
@@ -13,7 +14,8 @@ public interface functions extends Collection<function>{
 	 * @throws IOException if the file does not exists of unreadable (wrong format)
 	 */
 	public void initFromFile(String file) throws IOException;
-/**
+
+	/**
  * 
  * @param file - the file name
  * @throws IOException if the file is not writable
