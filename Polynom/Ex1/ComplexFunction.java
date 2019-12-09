@@ -55,9 +55,10 @@ public class ComplexFunction implements complex_function{
      * @param right - ComplexFunction/Monom/Polynom function to be inserted in the right function of ComplexFunction
      */
     public ComplexFunction(Operation op, function left, function right)  {
-        this.operation = op;
-        this.left = left;
-        this.right = right;
+        ComplexFunction _temp = new ComplexFunction(op.name(),left,right);
+        this.operation = _temp.getOp();
+        this.left = _temp.left();
+        this.right = _temp.right();
     }
 
     public ComplexFunction(function function) {
@@ -218,6 +219,8 @@ public class ComplexFunction implements complex_function{
                 return Math.max(left.f(x),right.f(x));
             case Comp:
                 return left.f(right.f(x));
+            case None:
+                return left.f(x);
             default:
                 throw new RuntimeException("Operation is undefined!");
         }
@@ -291,11 +294,14 @@ public class ComplexFunction implements complex_function{
      */
     @Override
     public String toString(){
-        String ans = Operation(operation)+"(" + left.toString();
-        if(right!= null)
-            ans += "," + right.toString() + ")";
-        else
-            ans += ")";
+        String  ans = "";
+        if(Operation(operation)!="none"){
+            ans = Operation(operation)+"(" + left.toString();
+            if(right!= null)
+                ans += "," + right.toString() + ")";
+        }else{
+            ans = left.toString();
+        }
         return ans;
     }
 

@@ -88,7 +88,7 @@ public class Functions_GUI implements functions{
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < this.size(); i++) {
             sb.append(this.list.get(i).toString());
-            if(i < size() - 1) sb.append(", ");
+            if(i < size() - 1) sb.append("\n");
         }
         return sb.toString();
     }
@@ -162,7 +162,7 @@ public class Functions_GUI implements functions{
         for(int a = 0; a < size; a++) {
             int c = a % Colors.length;
             StdDraw.setPenColor(Colors[c]);
-            System.out.println(a + ") " + Colors[a] + "  f(x)= " + this.list.get(a));
+            System.out.println(a + ") " + Colors[c] + "  f(x)= " + this.list.get(c));
             for (int i = 0; i < n; i++) {
                 StdDraw.line(x[i], yy[a][i], x[i+1], yy[a][i+1]);
             }

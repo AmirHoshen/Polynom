@@ -54,6 +54,7 @@ public class Polynom implements Polynom_able{
 	}
 
 	public Polynom(String str) throws Exception {//string constractor
+		str = str.replaceAll(" ","");
 		str = str.replaceAll("X", "x");
 		if(str.matches("(?=.+)([+-]?[0-9]*[.]?[0-9]*(?:\\*?x?(?:\\^[0-9]+)?)?)*"))
 		{

@@ -110,11 +110,14 @@ class complexFunctionTest {
     }
 
     @Test
-    void initFromString() throws Exception {
+    void initFromStringTest() throws Exception {
+        ComplexFunction _init = new ComplexFunction();
+        _init.initFromString("plus(-1.0x^4 +2.4x^2 +3.1,+0.1x^5 -1.2999999999999998x +5.0)");
+        System.out.println(_init.toString());
     }
 
     @Test
-    void copy() throws Exception {
+    void copy()  {
     }
 @Test
     void FunctionsFactory() throws Exception {
