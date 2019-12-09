@@ -10,7 +10,7 @@ public interface function extends Serializable{
 	 * return a String representing this complex function
 	 */
 	public String toString();
-	public function initFromString(String s);
-	public function copy(); // clone
+	public function initFromString(String s) throws Exception;
+	public function copy() throws Exception; // clone
 	public boolean equals(Object obj);
 }
