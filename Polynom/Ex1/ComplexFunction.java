@@ -331,4 +331,28 @@ public class ComplexFunction implements complex_function{
                 return "Error";
         }
     }
+
+    /*
+     * plus(9x^3,x^3)==Times(10x,x^2)
+     */
+
+    /**
+     * check if this class complex functions is identical to
+     * Object obj (that should be instance of complex function other wise returns false)
+      * @param obj the complex function to compare with.
+     * @return true if they are identical
+     * otherwise false.
+     */
+    public boolean equals(Object obj) {
+        if(!(obj instanceof ComplexFunction))
+            return false;
+
+        ComplexFunction other = (ComplexFunction) obj;
+
+        for (int i = 1; i <=10; i++) {
+            if(this.f(i)!=other.f(i))
+                return false;
+        }
+        return true;
+    }
 }
