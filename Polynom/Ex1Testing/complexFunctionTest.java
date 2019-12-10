@@ -129,8 +129,11 @@ class complexFunctionTest {
     System.out.println("Testing f(x): ");
     System.out.println("cf --> f(3)= " + cf.f(3));
     System.out.println("cf1 --> f(3)= " + cf1.f(3));
-    System.out.println("Testing max: ");
-
+    System.out.println("Testing equals: ");
+    ComplexFunction cf3 = new ComplexFunction(cf2);
+    System.out.println("functions is identical?:\n" +
+            "Expected: true\n" +
+            "Actual: "+cf2.equals(cf3));
 
 
     //ComplexFunction cf = new ComplexFunction("plus", new Polynom("2x+1"),new Polynom("2x+1"));
