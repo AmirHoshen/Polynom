@@ -1,4 +1,4 @@
-package Ex1Testing;
+package Ex1.Ex1Testing;
 
 import java.util.Iterator;
 
@@ -10,7 +10,6 @@ import Ex1.Functions_GUI;
 import Ex1.Monom;
 import Ex1.Operation;
 import Ex1.Polynom;
-import Ex1.Range;
 import Ex1.function;
 import Ex1.functions;
 /**

@@ -1,4 +1,4 @@
-package Ex1Testing;
+package Ex1.Ex1Testing;
 
 import Ex1.Monom;
 
