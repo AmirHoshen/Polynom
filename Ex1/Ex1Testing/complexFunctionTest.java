@@ -1,4 +1,4 @@
-package Ex1Testing;
+package Ex1.Ex1Testing;
 
 import Ex1.ComplexFunction;
 import Ex1.Monom;
@@ -23,45 +23,87 @@ class complexFunctionTest {
     }
 
     @Test
-    void plus() throws Exception {
-        Polynom p1 = new Polynom("x+2");
-        Polynom p2 = new Polynom("5x+5");
-        ComplexFunction cf = new ComplexFunction("Plus",p1,p2);
-        p1.add(p2);
-        if(!p1.toString().equals(cf.toString())){
-            fail("Not Equal Strings of Plus");
+    void plus() throws Exception {// use cf.plus()
+        System.out.println("***** Plus Testing: *****");
+        ComplexFunction plus = new ComplexFunction("plus",new Polynom("3x^2+4x+2"),new Polynom("3x"));
+        plus.plus(new Polynom("3x"));
+        int checkNum = 4;
+        double expected = (3*4*4+10*4+2);
+        if(plus.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + plus.f(checkNum));
         }else{
-            System.out.println("Equal String of Plus");
+            System.out.println("Expected: "+ expected + ", Actual: " + plus.f(checkNum));
         }
     }
 
     @Test
-    void mul() throws Exception {
-        Polynom p1 = new Polynom("2x^2+2");
-        Polynom p2 = new Polynom("x+5");
-        ComplexFunction cf = new ComplexFunction("Times",p1,p2);
-        p1.multiply(p2);
-        if(!p1.toString().equals(cf.toString())){
-            fail("Not Equal Strings of Multiply");
+    void mul() throws Exception {// use cf.mul()
+        System.out.println("***** Muliply Testing: *****");
+        ComplexFunction mul = new ComplexFunction("plus",new Polynom("3x^2+4x+2"),new Polynom("3x"));
+        mul.mul(new Polynom("3x"));
+        int checkNum = 4;
+        double expected = (3*4*4+7*4+2)*(3*4);
+        if(mul.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + mul.f(checkNum));
         }else{
-            System.out.println("Equal String of Multiply");
+            System.out.println("Expected: "+ expected + ", Actual: " + mul.f(checkNum));
         }
     }
 
     @Test
-    void div() throws Exception {
+    void div() throws Exception {// use cf.div()
+        System.out.println("***** Divide Testing: *****");
+        ComplexFunction div = new ComplexFunction("div",new Polynom("5x^2"),new Polynom("3x"));
+        div.div(new ComplexFunction("plus",new Polynom("2x^2"),new Polynom("3x+1")));
+        int checkNum = 4;
+        double expected = ((5*4*4)/(12.0))/(2*4*4+3*4+1);
+        if(div.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + div.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + div.f(checkNum));
+        }
     }
 
     @Test
-    void max() throws Exception {
+    void max() throws Exception {// use cf.max()
+        System.out.println("***** Maximum Testing: *****");
+        ComplexFunction max = new ComplexFunction("max",new Polynom("5x^2"),new Monom("3x"));
+        max.max(new Polynom("4x^2"));
+        int checkNum = 4;
+        double expected = 5*4*4;
+        if(max.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + max.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + max.f(checkNum));
+        }
     }
 
     @Test
-    void min() throws Exception {
+    void min() throws Exception {// use cf.min()
+        System.out.println("***** Minimum Testing: *****");
+        ComplexFunction min = new ComplexFunction("max",new Polynom("5x^2"),new Monom("3x"));
+        min.min(new Polynom("4x^3"));
+        int checkNum = 4;
+        double expected = 5*4*4;
+        if(min.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + min.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + min.f(checkNum));
+        }
     }
 
     @Test
-    void comp() throws Exception {
+    void comp() throws Exception {// use cf.comp()
+        System.out.println("***** Comp Testing: *****");
+        ComplexFunction comp = new ComplexFunction("comp",new Polynom("5x^2"),new Polynom("3x"));
+        comp.comp(new Polynom("4x^2"));
+        int checkNum = 4;
+        double expected = 5*9*16*4*4*4*4;
+        if(comp.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + comp.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + comp.f(checkNum));
+        }
     }
 
     @Test
@@ -107,82 +149,113 @@ class complexFunctionTest {
 
     @Test
     void f() throws Exception {
+        System.out.println("***** Plus.f() Testing: *****");
+        ComplexFunction plus1 = new ComplexFunction("plus",new Polynom("3x^2+4x+2"),new Polynom("3x"));
+        ComplexFunction plus2 = new ComplexFunction(plus1.initFromString("plus(3x^2+4x,3x+2)"));
+        int checkNum = 4;
+        double expected = (3*4*4+4*4+2)+(3*4);
+        if(plus1.f(checkNum)!= plus2.f(checkNum) || plus1.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + plus1.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + plus1.f(checkNum));
+        }
+        //-------------------------------------//
+        System.out.println("***** Multiply.f() Testing: *****");
+        ComplexFunction mul1 = new ComplexFunction("mul",new Polynom("3x^2+4x"),new Polynom("3x+2"));
+        ComplexFunction mul2 = new ComplexFunction(mul1.initFromString("mul(3x^2+4x,3x+2)"));
+        checkNum = 4;
+        expected = (3*4*4+4*4)*(3*4+2);
+        if(mul1.f(checkNum)!= mul2.f(checkNum) || mul1.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + mul1.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + mul1.f(checkNum));
+        }
+        //-------------------------------------//
+        System.out.println("***** Divide.f() Testing: *****");
+        ComplexFunction div1 = new ComplexFunction("div",new Polynom("5x^2"),new Polynom("3x"));
+        ComplexFunction div2 = new ComplexFunction(div1.initFromString("div(5x^2,3x)"));
+        checkNum = 4;
+        expected = (5*4*4)/(12.0);
+        if(div1.f(checkNum)!= div2.f(checkNum) || div1.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + div1.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + div1.f(checkNum));
+        }
+        //-------------------------------------//
+        System.out.println("***** Maximum.f() Testing: *****");
+        ComplexFunction max1 = new ComplexFunction("max",new Polynom("5x^2"),new Polynom("3x"));
+        ComplexFunction max2 = new ComplexFunction(max1.initFromString("max(5x^2,2x)"));
+        checkNum = 4;
+        expected = 5*4*4;
+        if(max1.f(checkNum)!= max2.f(checkNum) || max1.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + max1.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + max1.f(checkNum));
+        }
+        //-------------------------------------//
+        System.out.println("***** Minimum.f() Testing: *****");
+        ComplexFunction min1 = new ComplexFunction("min",new Polynom("5x^2"),new Polynom("3x"));
+        ComplexFunction min2 = new ComplexFunction(min1.initFromString("min(8x^2,3x)"));
+        checkNum = 4;
+        expected = 3*4;
+        if(min1.f(checkNum)!= min2.f(checkNum) || min1.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + min1.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + min1.f(checkNum));
+        }
+        //-------------------------------------//
+        System.out.println("***** Comp.f() Testing: *****");
+        ComplexFunction comp = new ComplexFunction("comp",new Polynom("5x^2"),new Polynom("3x"));
+        checkNum = 4;
+        expected = 5*(3*4)*(3*4);
+        if(comp.f(checkNum)!= expected){
+            fail("Expected: "+ expected + ", Actual: " + comp.f(checkNum));
+        }else{
+            System.out.println("Expected: "+ expected + ", Actual: " + comp.f(checkNum));
+        }
     }
 
     @Test
     void initFromStringTest() throws Exception {
+        System.out.println("***** InitFromString Testing: *****");
         ComplexFunction _init = new ComplexFunction();
-        _init.initFromString("plus(-1.0x^4 +2.4x^2 +3.1,+0.1x^5 -1.2999999999999998x +5.0)");
-        System.out.println(_init.toString());
+        String functionString = "plus(-1.0x^4 +2.4x^2 +3.1,+0.1x^5 -1.2999999999999998x +5.0)";
+        functionString = functionString.replaceAll(" ", "");
+        String result = _init.initFromString(functionString).toString();
+        ComplexFunction _after = new ComplexFunction(_init.initFromString(functionString));
+        if(!result.equals(_after.toString())){
+            fail("Expected : " + functionString + ", Actual: " + _after.toString());
+        }else{
+            System.out.println("Expected : " + functionString + ", Actual: " + _after.toString());
+        }
+
     }
 
     @Test
-    void copy()  {
+    void copy() throws Exception {
+        System.out.println("***** Copy Testing: *****");
+        ComplexFunction _copy = new ComplexFunction("plus",
+                new Polynom("-1.0x^4 +2.4x^2 +3.1"),
+                new Polynom("+0.1x^5 -1.2999999999999998x +5.0"));
+        String result = _copy.toString();
+        ComplexFunction _after = new ComplexFunction(_copy.copy());
+        if(!result.equals(_after.toString())){
+            fail("Expected : " + result + ", Actual: " + _after.toString());
+        }else{
+            System.out.println("Expected : " + result + ", Actual: " + _after.toString());
+        }
     }
-@Test
-    void FunctionsFactory() throws Exception {
-    ComplexFunction cf = new ComplexFunction("plus",new ComplexFunction("plus", new Polynom("6x^2+3x+2"),new Polynom("3x^2+3X+2")),new ComplexFunction("plus",new ComplexFunction("times",new Polynom("x+1"),new Monom("2x")),new Polynom("x")));
-    ComplexFunction cf1 = new ComplexFunction("times",new Polynom("8x+8"),new Polynom("9x+9"));
-    ComplexFunction cf2 = new ComplexFunction("max",new ComplexFunction("min",new Polynom("3x+2"),new Polynom("2x")),new Monom("7x^3"));
-    System.out.println("Testing toString(): ");
-    System.out.println("cf is: "+cf.toString()+"\ncf1 is: "+cf1.toString()+"\ncf2 is: "+cf2.toString());
-    System.out.println("Testing f(x): ");
-    System.out.println("cf --> f(3)= " + cf.f(3));
-    System.out.println("cf1 --> f(3)= " + cf1.f(3));
-    System.out.println("Testing equals: ");
-    ComplexFunction cf3 = new ComplexFunction(cf2);
-    System.out.println("functions is identical?:\n" +
-            "Expected: true\n" +
-            "Actual: "+cf2.equals(cf3));
 
-
-    //ComplexFunction cf = new ComplexFunction("plus", new Polynom("2x+1"),new Polynom("2x+1"));
-        //Functions_GUI ans = new Functions_GUI();
-//        String s1 = "-x^4+2x^3+x+2";
-//        String s2 = "x+2";
-//        String[] s3 = {"x+3","x-2", "x-4"};
-//        Polynom p1 = new Polynom(s1);
-//        Polynom p2 = new Polynom(s2);
-//        Polynom p3 = new Polynom(s3[0]);
-        //ComplexFunction cf3 = new ComplexFunction(p3);
-//        for(int i=1;i<s3.length;i++) {
-         //  cf3.mul(new Polynom(s3[i]));
-//        }
-
-//        ComplexFunction cf = new ComplexFunction("plus",
-//                new ComplexFunction("times",
-//                        new ComplexFunction("times",new Polynom("2x+2"),new Polynom("3x+3")),
-//                        new ComplexFunction("times",new Polynom("8x+8"),new Polynom("9x+9"))
-//                ),
-//                new ComplexFunction("times",
-//                        new ComplexFunction("times",new Polynom("4x+4"),new Polynom("5x+5")),
-//                        new ComplexFunction("times",new Polynom("6x+6"),new Polynom("7x+7"))
-//                )
-//        );
-
-        //ComplexFunction cf4 = new ComplexFunction("div", new Polynom("x +1"),cf3);
-       // cf4.plus(new Monom("2"));
-       // cf4.plus(new Polynom("x+2"));
-        //ans.add(cf.copy());
-        //ans.add(cf4.copy());
-        //cf.div(p1);
-        //cf.plus(new Polynom("3x^5+2x+3"));
-        //ans.add(cf.copy());
-       // String s = cf.toString();
-        //System.out.println(s);
-        //function cf5 = cf4.initFromString(s1);
-        //function cf6 = cf4.initFromString(s2);
-        //ans.add(cf5.copy());
-        //ans.add(cf6.copy());
-        //ComplexFunction max = new ComplexFunction(ans.get(0).copy());
-        //ComplexFunction min = new ComplexFunction(ans.get(0).copy());
-        //for(int i=1;i<ans.size();i++) {
-        //    max.max(ans.get(i));
-        //    min.min(ans.get(i));
-        //}
-        //ans.add(max);
-        //ans.add(min);
-
-        //return ans;
+    @Test
+    void equals() throws Exception{
+        System.out.println("***** Equals Testing: ");
+        ComplexFunction cf = new ComplexFunction("plus",new Polynom("2x^2"),new Polynom("2x^2"));
+        ComplexFunction cf2 = new ComplexFunction("mul", new Polynom("2x"), new Polynom("2x"));
+        if(!cf.equals(cf2)){
+            fail("Not Equal Funtions!");
+        }else {
+            System.out.println("Equal Functions!");
+        }
     }
+
 }
