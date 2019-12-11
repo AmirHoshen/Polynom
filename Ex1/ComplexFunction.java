@@ -3,6 +3,13 @@ package Ex1;
 import java.util.Stack;
 
 import static Ex1.Operation.*;
+
+/***
+ * ComplexFunction - Object which can hold complex functions may be function of thr type: ComplexFunction,Polynom,Monom
+ * and Operator to decide what action to be preformed on the functions it holds
+ * @author Peleg Zborovsky and Amir Hoshen
+ */
+
 public class ComplexFunction implements complex_function{
     private Operation operation;
     private function left;
@@ -332,26 +339,25 @@ public class ComplexFunction implements complex_function{
         }
     }
 
-    /*
-     * plus(9x^3,x^3)==Times(10x,x^2)
+    /***
+     *  Equals - check for equal objects of the same type may be plus(2x,x) == mul(3x,1) etc.
+     * @param obj - Object of any kind to check if equals to this ComplexFunction
+     * @return - returns true if the object checked is from the same object type and returns the same value of f(x)
+     *           may return ArithmeticException for dividing by zero may happen wouldn't affect the result at the end
+     *           it just skips the bad values.
      */
-
-    /**
-     * check if this class complex functions is identical to
-     * Object obj (that should be instance of complex function other wise returns false)
-      * @param obj the complex function to compare with.
-     * @return true if they are identical
-     * otherwise false.
-     */
-    public boolean equals(Object obj) {
+    public boolean equals(Object obj){
         if(!(obj instanceof ComplexFunction))
             return false;
+        ComplexFunction _temp = (ComplexFunction) obj;
+        for (int i = -5; i < 10 ;i++){
+            try {
+                if(this.f(i)!= _temp.f(i))
+                    return false;
 
-        ComplexFunction other = (ComplexFunction) obj;
-
-        for (int i = 1; i <=10; i++) {
-            if(this.f(i)!=other.f(i))
-                return false;
+            }catch (ArithmeticException ae){
+                ae.getCause();
+            }
         }
         return true;
     }
