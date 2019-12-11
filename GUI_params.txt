@@ -1,0 +1,7 @@
+{
+ 	"Width":1000,
+ 	"Height":600,
+ 	"Resolution":300,
+ 	"Range_X":[-15,15],
+ 	"Range_Y":[-20,20]
+ 	}
