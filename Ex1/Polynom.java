@@ -4,6 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static Ex1.Monom.EPSILON;
+
 /**
  * This class represents a Polynom with add, multiply functionality, it also should support the following:
  * 1. Riemann's Integral: https://en.wikipedia.org/wiki/Riemann_integral
@@ -181,26 +183,21 @@ public class Polynom implements Polynom_able{
 		}
 	}
 
-	public boolean equals(Polynom_able p1) {
-		if(p1==null) {
-			throw new IllegalArgumentException("No argument, cannot calculate");
-		}else {
-			double x = Math.random()*100;
-			if(f(x)==p1.f(x)) {
-				Iterator<Monom> iter1 = poly.iterator();
-				Iterator<Monom> iter2 = p1.iteretor();
-				while(iter1.hasNext() && iter2.hasNext()) {
-					Monom run1 = iter1.next();
-					Monom run2 = iter2.next();
-					if(run1.get_coefficient()!= run2.get_coefficient()
-							&& run1.get_power() !=run2.get_power()) return false;
-				}
-				if(!iter1.hasNext() && !iter2.hasNext()) return true;
-			}else {
-				return false;
-			}
+	public boolean equals(Object p1) {
+		if(!(p1 instanceof Polynom_able)) {
+			return false;
 		}
-		return false;
+
+		Iterator<Monom> iter1 = this.iteretor();
+		Iterator<Monom> iter2 = ((Polynom_able) p1).iteretor();
+
+		while (iter1.hasNext() && iter2.hasNext()) {
+			Monom tmp1 = iter1.next();
+			Monom tmp2 = iter2.next();
+			if ((Math.abs(tmp1.get_coefficient()- tmp2.get_coefficient())>EPSILON) || (tmp1.get_power() != tmp2.get_power()))
+				return false;
+		}
+		return true;
 	}
 
 	/***
